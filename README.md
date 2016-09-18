@@ -93,3 +93,23 @@ Presentation for PyData Berlin meetup
     - CSV, JSON, Parquet, etc.
 
 ## ETL Example
+
+https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/662560416696146/4042487927339252/5106111992384501/latest.html
+
+## ML Example
+
+https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/662560416696146/3079115932455629/5106111992384501/latest.html
+
+## Unit Testing
+
+- findspark
+    - `SPARK_HOME`
+- spark-testing-base
+    - SparkTestingBase
+    - SparkTestingBase reuse
+- `PYSPARK_SUBMIT_ARGS`
+- `SPARK_MASTER`
+
+## Gotchas
+## Performance
+## References
