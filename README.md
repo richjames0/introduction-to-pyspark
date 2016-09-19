@@ -1,5 +1,5 @@
 # Introduction to PySpark
-Presentation for PyData Berlin meetup
+Presentation for PyData Berlin September meetup
 
 ## Agenda
 
@@ -7,9 +7,8 @@ Presentation for PyData Berlin meetup
 - Why PySpark?
 - Why Not [Py]Spark?
 - [Py]Spark Alternatives
-- Spark Overview
 - Getting Started
-- Core concepts
+- Core Concepts
 - ETL Example
 - Machine Learning Example
 - Unit Testing
@@ -40,6 +39,7 @@ Presentation for PyData Berlin meetup
 
 ## [Py]Spark Alternatives
 
+- Scala
 - Pig etc.
 - AWK / sed?
 - Python
@@ -53,12 +53,14 @@ Presentation for PyData Berlin meetup
     - Gearman
     - PyRes
     - Distarray / Blaze
-    - Dask - http://dask.pydata.org/en/latest/spark.html
+    - [Dask](http://dask.pydata.org/en/latest/spark.html)
 
 ## Getting Started
 
 - Local
-    - Homebrew (OSX)
+    - OSX: Homebrew
+    - [Windows](https://hernandezpaul.wordpress.com/2016/01/24/apache-spark-installation-on-windows-10/)
+    - [Linux](https://www.linkedin.com/pulse/how-install-spark-160-top-hadoop-260-anil-maharjan)
 - Cloud
     - Databricks
     - AWS
@@ -68,9 +70,9 @@ Presentation for PyData Berlin meetup
 
 - RDDs
     - Immutable collection
+    - Resilient
     - Distributed / partitioned and can control partitioning
-    - Resilinent
-    - In memory
+    - In-memory (at times)
 - Transforms
     - `map / reduce`
     - `filter`
@@ -94,20 +96,19 @@ Presentation for PyData Berlin meetup
 
 ## ETL Example
 
-https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/662560416696146/4042487927339252/5106111992384501/latest.html
+[Databricks notebook](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/662560416696146/4042487927339252/5106111992384501/latest.html)
 
 ## ML Example
 
-https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/662560416696146/3079115932455629/5106111992384501/latest.html
+[Databricks notebook](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/662560416696146/3079115932455629/5106111992384501/latest.html)
 
 ## Unit Testing
 
 - findspark
-    - `SPARK_HOME`
-- spark-testing-base
-    - https://github.com/holdenk/spark-testing-base
-    - SparkTestingBase
-    - SparkTestingBase reuse
+    - `export SPARK_HOME="..."`
+- [spark-testing-base](https://github.com/holdenk/spark-testing-base)
+    - `class SparkTestingBase: TestCase`
+    - `class SparkTestingBaseReuse: TestCase`
 - `export PYSPARK_SUBMIT_ARGS=“… pyspark-shell"`
 - `export SPARK_MASTER=“yarn-client"`
 
@@ -118,10 +119,10 @@ https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93e
     - Examples
         - `Failed to start database 'metastore_db' with class loader org.apache.spark.sql.hive.client.IsolatedClientLoader`
         - `You must build Spark with Hive. Export 'SPARK_HIVE=true' and run build/sbt assembly", Py4JJavaError(u'An error occurred while calling None.org.apache.spark.sql.hive.HiveContext.\n', JavaObject id=o23)`
-        - `16/06/14 14:46:20 INFO latency: StatusCode=[404], Exception=[com.amazonaws.services.s3.model.AmazonS3Exception: Not Found (Service: Amazon S3; Status Code: 404; Error Code: 404 Not Found; Request ID: 334AFFEECBCB0CC9), S3 Extended Request ID:   B5PXAtFnURZj49EtCdhGog2ciUoIOCblYa8dQ9GOL4w4SCdgL3/hA+M4jdR3S7X6wTsLqZPlxmU=], ServiceName=[Amazon S3], AWSErrorCode=[404 Not Found], AWSRequestID=[334AFFEECBCB0CC9],`
+        - `16/06/14 14:46:20 INFO latency: StatusCode=[404], Exception=[com.amazonaws.services.s3.model.AmazonS3Exception: Not Found (Service: Amazon S3; Status Code: 404; Error Code: 404 Not Found; Request ID: 334AFFEECBCB0CC9)`
         - `java.lang.IllegalArgumentException: Invalid S3 URI: hostname does not appear to be a valid S3 endpoint:`
     - In some cases these aren't errors at all. In others they're masking the real errors - look elsewhere in the console / log
-- For my use-cases, `HiveContext` is less stable than `SQLContext` (though community generally recommends it)
+- For some (e.g. running locally and disconnected) use-cases, `HiveContext` is less stable than `SQLContext` (though community generally recommends the former)
 - Distributing Python files to the workers
     - `--py-files` seems not always to work as expected
     - Packaging files and installing on servers (e.g. in bootstrap) seems more reliable
@@ -129,9 +130,13 @@ https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93e
     - Use bitwise operators such as `~` on columns
     - Other random errors can often be fixed with the addition of brackets
 - spark-csv
-    - In some cases need to set an escape character for and neither `None` nor the empty string work. I use a weird unicode character and haven't had problems with that
+    - In some cases need to set an escape character and neither `None` nor the empty string work. Weird unicode characters seem to work
     - When seeing problems such as `java.lang.NoClassDefFoundError` or `java.lang.NoSuchMethodError`, check you're using the version built for the appropriate version of Scala (2.10 vs.2.11)
-- Redshift data source's behavior often challenges at least my expectations!
+- Redshift data source's behavior can challenge expectations
+    - Be careful with schemas and be aware of when it's rewriting them
+    - For longer text fields do not allow the datasource to [re]create the table
+    - Pre-actions don't seem to work on some builds
+    - Remember to set-up a cleanup policy for the transfer directory on S3
 
 ## Performance
 
@@ -146,29 +151,29 @@ https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93e
 ## References
 
 - DataFrames
-    - https://databricks.com/blog/2015/02/17/introducing-dataframes-in-spark-for-large-scale-data-science.html
-    - https://medium.com/@chris_bour/6-differences-between-pandas-and-spark-dataframes-1380cec394d2#.xe6wm0h56
-    - https://ogirardot.wordpress.com/2015/05/29/rdds-are-the-new-bytecode-of-apache-spark/
-    - https://databricks.com/blog/2015/02/17/introducing-dataframes-in-spark-for-large-scale-data-science.html
-    - https://databricks.com/blog/2015/08/12/from-pandas-to-apache-sparks-dataframe.html
+    - <https://databricks.com/blog/2015/02/17/introducing-dataframes-in-spark-for-large-scale-data-science.html>
+    - <https://medium.com/@chris_bour/6-differences-between-pandas-and-spark-dataframes-1380cec394d2#.xe6wm0h56>
+    - <https://ogirardot.wordpress.com/2015/05/29/rdds-are-the-new-bytecode-of-apache-spark/>
+    - <https://databricks.com/blog/2015/02/17/introducing-dataframes-in-spark-for-large-scale-data-science.html>
+    - <https://databricks.com/blog/2015/08/12/from-pandas-to-apache-sparks-dataframe.html>
     - Adapters
-        - https://github.com/databricks/spark-csv
-        - https://databricks.com/blog/2015/10/19/introducing-redshift-data-source-for-spark.html
+        - <https://github.com/databricks/spark-csv>
+        - <https://databricks.com/blog/2015/10/19/introducing-redshift-data-source-for-spark.html>
 - Performance
-    - https://stackoverflow.com/questions/31684842/how-to-use-java-scala-function-from-an-action-or-a-transformation
-    - http://blog.cloudera.com/blog/2015/03/how-to-tune-your-apache-spark-jobs-part-1/
-    - http://blog.cloudera.com/blog/2015/03/how-to-tune-your-apache-spark-jobs-part-2/
-    - https://databricks.com/blog/2015/06/22/understanding-your-spark-application-through-visualization.html
+    - <https://stackoverflow.com/questions/31684842/how-to-use-java-scala-function-from-an-action-or-a-transformation>
+    - <http://blog.cloudera.com/blog/2015/03/how-to-tune-your-apache-spark-jobs-part-1/>
+    - <http://blog.cloudera.com/blog/2015/03/how-to-tune-your-apache-spark-jobs-part-2/>
+    - <https://databricks.com/blog/2015/06/22/understanding-your-spark-application-through-visualization.html>
 - Zeppelin
-    - http://www.slideshare.net/DanielMadrigal20/intro-to-spark-with-zeppelin-crash-course-hadoop-summit-sj
-    - https://github.com/hortonworks-gallery/zeppelin-notebooks
+    - <http://www.slideshare.net/DanielMadrigal20/intro-to-spark-with-zeppelin-crash-course-hadoop-summit-sj>
+    - <https://github.com/hortonworks-gallery/zeppelin-notebooks>
 - ML
-    - https://spark.apache.org/docs/1.5.1/ml-features.html#stringindexer
+    - <https://spark.apache.org/docs/1.5.1/ml-features.html#stringindexer>
 
 - Books
-    - Spark for Python Developers
-    - Spark Cookbook
-    - High Performance Spark
-    - Learning Spark
-    - Data Analytics with Hadoop
-- Courses by edX
+    - [Spark for Python Developers](http://shop.oreilly.com/product/9781784399696.do)
+    - [Spark Cookbook](http://shop.oreilly.com/product/9781783987061.do)
+    - [High Performance Spark](http://shop.oreilly.com/product/0636920046967.do)
+    - [Learning Spark](http://shop.oreilly.com/product/0636920028512.do)
+    - [Data Analytics with Hadoop](http://shop.oreilly.com/product/0636920035275.do)
+- [Courses by edX](https://www.edx.org/xseries/data-science-engineering-apache-spark)
