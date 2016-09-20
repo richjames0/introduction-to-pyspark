@@ -21,6 +21,7 @@ Presentation for PyData Berlin September meetup
 - Large data sets
 - Cost of scaling up >> cost of scaling out
 - In memory (sometimes)
+- Programming model
 - Generic framework
 - Batch processing, stream processing, graph processing, SQL and machine learning
 
@@ -49,6 +50,7 @@ Presentation for PyData Berlin September meetup
     - Multiprocessing
     - Parallel Python
     - IPython Parallel
+    - Cython
     - Queues / pub/sub (NPQ, Celery, SQS, etc.)
     - Gearman
     - PyRes
@@ -68,11 +70,15 @@ Presentation for PyData Berlin September meetup
 
 ## Core concepts
 
+- Driver / Workers
 - RDDs
     - Immutable collection
     - Resilient
     - Distributed / partitioned and can control partitioning
     - In-memory (at times)
+- Loading  data
+    - Files on local filesystem, HDFS, S3, RedShift, Hive, etc.
+    - CSV, JSON, Parquet, etc.
 - Transforms
     - `map / reduce`
     - `filter`
@@ -83,16 +89,13 @@ Presentation for PyData Berlin September meetup
     - `count`
     - `take / first`
     - `collect`
-- Data frames
+- DataFrames
     - Higher-level concept
     - Based on RDD
     - Structured - like a table and with a schema (which can  be inferred)
     - Faster
     - Easier to work with
     - API or SQL
-- Loading  data
-    - Files on local filesystem, HDFS, S3, RedShift, Hive, etc.
-    - CSV, JSON, Parquet, etc.
 
 ## ETL Example
 
@@ -124,7 +127,7 @@ Presentation for PyData Berlin September meetup
     - In some cases these aren't errors at all. In others they're masking the real errors - look elsewhere in the console / log
 - For some (e.g. running locally and disconnected) use-cases, `HiveContext` is less stable than `SQLContext` (though community generally recommends the former)
 - Distributing Python files to the workers
-    - `--py-files` seems not always to work as expected
+    - `--py-files` and/or `--zip-files` seem not always to work as expected
     - Packaging files and installing on servers (e.g. in bootstrap) seems more reliable
 - Select syntax quirks
     - Use bitwise operators such as `~` on columns
@@ -137,16 +140,20 @@ Presentation for PyData Berlin September meetup
     - For longer text fields do not allow the datasource to [re]create the table
     - Pre-actions don't seem to work on some builds
     - Remember to set-up a cleanup policy for the transfer directory on S3
+- `sqlContext.read.load` fails with the following error, when reading CSV files, if `format='csv'` is not specified (which is __not__ required for `sqlContext.load`:
+
+    `Caused by: java.io.IOException: Could not read footer: java.lang.RuntimeException: file:/Users/Richard/src/earnest/preprocessing/storage/local/mnt/3m-panel/card/20160120_YODLEE_CARD_PANEL.txt is not a Parquet file. expected magic number at tail [80, 65, 82, 49] but found [46, 50, 48, 10]`
 
 ## Performance
 
+- Cache / Persist
+    - [Ronert Obst, Dat Tran - PySpark in Practice](https://www.youtube.com/watch?v=ZojIGRS3HLY&list=PLGVZCDnMOq0ogEIvRHZyXMNJwkEPHi6Bl&index=26)
 - Double serialization cost
 - Cython and/or compiled libraries
 - Potential to call Scala/Java code?
     - [Holden Karau - Improving PySpark Performance: Spark performance beyond the JVM](https://www.youtube.com/watch?v=WThEk88cWJQ&index=21&list=PLGVZCDnMOq0rzDLHi5WxWmN5vueHU5Ar7)
-    - Zeppelin / Livy
-    - Databricks
-- [Ronert Obst, Dat Tran - PySpark in Practice](https://www.youtube.com/watch?v=ZojIGRS3HLY&list=PLGVZCDnMOq0ogEIvRHZyXMNJwkEPHi6Bl&index=26)
+    - Zeppelin
+    - Databricks / Livy
 
 ## References
 
@@ -169,7 +176,6 @@ Presentation for PyData Berlin September meetup
     - <https://github.com/hortonworks-gallery/zeppelin-notebooks>
 - ML
     - <https://spark.apache.org/docs/1.5.1/ml-features.html#stringindexer>
-
 - Books
     - [Spark for Python Developers](http://shop.oreilly.com/product/9781784399696.do)
     - [Spark Cookbook](http://shop.oreilly.com/product/9781783987061.do)
@@ -177,3 +183,9 @@ Presentation for PyData Berlin September meetup
     - [Learning Spark](http://shop.oreilly.com/product/0636920028512.do)
     - [Data Analytics with Hadoop](http://shop.oreilly.com/product/0636920035275.do)
 - [Courses by edX](https://www.edx.org/xseries/data-science-engineering-apache-spark)
+
+## Contact
+
+- richdutton on pythonberlin Slack
+- https://de.linkedin.com/in/duttonrichard
+- http://earnestresearch.com
