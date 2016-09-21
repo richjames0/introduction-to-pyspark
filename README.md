@@ -20,8 +20,8 @@ Presentation for PyData Berlin September meetup
 ## Why Spark?
 
 - Large data sets
-- Batch processing, stream processing, graph processing, SQL and machine learning
 - Cost of scaling up >> cost of scaling out
+- Batch processing, stream processing, graph processing, SQL and machine learning
 - In memory (sometimes)
 - Programming model
 - Generic framework
@@ -128,9 +128,9 @@ Presentation for PyData Berlin September meetup
 - spark-csv
     - In some cases need to set an escape character and neither `None` nor the empty string work. Weird unicode characters seem to work
     - When seeing problems such as `java.lang.NoClassDefFoundError` or `java.lang.NoSuchMethodError`, check you're using the version built for the appropriate version of Scala (2.10 vs.2.11)
-- `sqlContext.read.load` fails with the following error, when reading CSV files, if `format='csv'` is not specified (which is __not__ required for `sqlContext.load`:
+    - `sqlContext.read.load` fails with the following error, when reading CSV files, if `format='csv'` is not specified (which is __not__ required for `sqlContext.load`:
 
-    `Caused by: java.io.IOException: Could not read footer: java.lang.RuntimeException: file:/Users/Richard/src/earnest/preprocessing/storage/local/mnt/3m-panel/card/20160120_YODLEE_CARD_PANEL.txt is not a Parquet file. expected magic number at tail [80, 65, 82, 49] but found [46, 50, 48, 10]`
+        `Caused by: java.io.IOException: Could not read footer: java.lang.RuntimeException: file:/Users/Richard/src/earnest/preprocessing/storage/local/mnt/3m-panel/card/20160120_YODLEE_CARD_PANEL.txt is not a Parquet file. expected magic number at tail [80, 65, 82, 49] but found [46, 50, 48, 10]`
 - Redshift data source's behavior can challenge expectations
     - Be careful with schemas and be aware of when it's rewriting them
     - For longer text fields do not allow the datasource to [re]create the table
