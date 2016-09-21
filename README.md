@@ -1,4 +1,5 @@
 # Introduction to PySpark
+
 Presentation for PyData Berlin September meetup
 
 ## Agenda
@@ -6,24 +7,24 @@ Presentation for PyData Berlin September meetup
 - Why Spark?
 - Why PySpark?
 - Why Not [Py]Spark?
-- [Py]Spark Alternatives
 - Getting Started
 - Core Concepts
 - ETL Example
 - Machine Learning Example
 - Unit Testing
-- Gotchas
 - Performance
+- Gotchas
+- [Py]Spark Alternatives
 - References
 
 ## Why Spark?
 
 - Large data sets
+- Batch processing, stream processing, graph processing, SQL and machine learning
 - Cost of scaling up >> cost of scaling out
 - In memory (sometimes)
 - Programming model
 - Generic framework
-- Batch processing, stream processing, graph processing, SQL and machine learning
 
 ## Why PySpark?
 
@@ -37,25 +38,6 @@ Presentation for PyData Berlin September meetup
 - Complexity
 - Troubleshooting
 - Small community?
-
-## [Py]Spark Alternatives
-
-- Scala
-- Pig etc.
-- AWK / sed?
-- Python
-    - Pandas?
-    - Threads?
-    - AsyncIO/Tornado/etc.
-    - Multiprocessing
-    - Parallel Python
-    - IPython Parallel
-    - Cython
-    - Queues / pub/sub (NPQ, Celery, SQS, etc.)
-    - Gearman
-    - PyRes
-    - Distarray / Blaze
-    - [Dask](http://dask.pydata.org/en/latest/spark.html)
 
 ## Getting Started
 
@@ -115,6 +97,17 @@ Presentation for PyData Berlin September meetup
 - `export PYSPARK_SUBMIT_ARGS=“… pyspark-shell"`
 - `export SPARK_MASTER=“yarn-client"`
 
+## Performance
+
+- Cache / Persist
+    - [Ronert Obst, Dat Tran - PySpark in Practice](https://www.youtube.com/watch?v=ZojIGRS3HLY&list=PLGVZCDnMOq0ogEIvRHZyXMNJwkEPHi6Bl&index=26)
+- Double serialization cost
+- Cython and/or compiled libraries
+- Potential to call Scala/Java code?
+    - [Holden Karau - Improving PySpark Performance: Spark performance beyond the JVM](https://www.youtube.com/watch?v=WThEk88cWJQ&index=21&list=PLGVZCDnMOq0rzDLHi5WxWmN5vueHU5Ar7)
+    - Zeppelin
+    - Databricks / Livy
+
 ## Gotchas
 
 - Pickling of class when distributing methods (seemingly including statics)
@@ -135,25 +128,34 @@ Presentation for PyData Berlin September meetup
 - spark-csv
     - In some cases need to set an escape character and neither `None` nor the empty string work. Weird unicode characters seem to work
     - When seeing problems such as `java.lang.NoClassDefFoundError` or `java.lang.NoSuchMethodError`, check you're using the version built for the appropriate version of Scala (2.10 vs.2.11)
+- `sqlContext.read.load` fails with the following error, when reading CSV files, if `format='csv'` is not specified (which is __not__ required for `sqlContext.load`:
+
+    `Caused by: java.io.IOException: Could not read footer: java.lang.RuntimeException: file:/Users/Richard/src/earnest/preprocessing/storage/local/mnt/3m-panel/card/20160120_YODLEE_CARD_PANEL.txt is not a Parquet file. expected magic number at tail [80, 65, 82, 49] but found [46, 50, 48, 10]`
 - Redshift data source's behavior can challenge expectations
     - Be careful with schemas and be aware of when it's rewriting them
     - For longer text fields do not allow the datasource to [re]create the table
     - Pre-actions don't seem to work on some builds
     - Remember to set-up a cleanup policy for the transfer directory on S3
-- `sqlContext.read.load` fails with the following error, when reading CSV files, if `format='csv'` is not specified (which is __not__ required for `sqlContext.load`:
 
-    `Caused by: java.io.IOException: Could not read footer: java.lang.RuntimeException: file:/Users/Richard/src/earnest/preprocessing/storage/local/mnt/3m-panel/card/20160120_YODLEE_CARD_PANEL.txt is not a Parquet file. expected magic number at tail [80, 65, 82, 49] but found [46, 50, 48, 10]`
+## [Py]Spark Alternatives
 
-## Performance
-
-- Cache / Persist
-    - [Ronert Obst, Dat Tran - PySpark in Practice](https://www.youtube.com/watch?v=ZojIGRS3HLY&list=PLGVZCDnMOq0ogEIvRHZyXMNJwkEPHi6Bl&index=26)
-- Double serialization cost
-- Cython and/or compiled libraries
-- Potential to call Scala/Java code?
-    - [Holden Karau - Improving PySpark Performance: Spark performance beyond the JVM](https://www.youtube.com/watch?v=WThEk88cWJQ&index=21&list=PLGVZCDnMOq0rzDLHi5WxWmN5vueHU5Ar7)
-    - Zeppelin
-    - Databricks / Livy
+- Scala Spark
+- Beam / Flink / Apex / ...
+- Pig etc.
+- AWK / sed?
+- Python
+    - Pandas?
+    - Threads?
+    - AsyncIO/Tornado/etc.
+    - Multiprocessing
+    - Parallel Python
+    - IPython Parallel
+    - Cython
+    - Queues / pub/sub (NPQ, Celery, SQS, etc.)
+    - Gearman
+    - PyRes
+    - Distarray / Blaze
+    - [Dask](http://dask.pydata.org/en/latest/spark.html)
 
 ## References
 
@@ -182,10 +184,12 @@ Presentation for PyData Berlin September meetup
     - [High Performance Spark](http://shop.oreilly.com/product/0636920046967.do)
     - [Learning Spark](http://shop.oreilly.com/product/0636920028512.do)
     - [Data Analytics with Hadoop](http://shop.oreilly.com/product/0636920035275.do)
+    - [High Performance Python (Spark alternatives)](http://shop.oreilly.com/product/0636920028963.do)
 - [Courses by edX](https://www.edx.org/xseries/data-science-engineering-apache-spark)
 
 ## Contact
 
-- richdutton on pythonberlin Slack
+- `richdutton` on `pythonberlin` Slack
+- `richdutton` on github
 - https://de.linkedin.com/in/duttonrichard
 - http://earnestresearch.com
