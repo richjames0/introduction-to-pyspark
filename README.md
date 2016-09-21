@@ -142,7 +142,7 @@ Presentation for PyData Berlin September meetup
 - Scala Spark
 - Beam / Flink / Apex / ...
 - Pig etc.
-- AWK / sed?
+- [AWK / sed?](http://aadrake.com/command-line-tools-can-be-235x-faster-than-your-hadoop-cluster.html)
 - Python
     - Pandas?
     - Threads?
