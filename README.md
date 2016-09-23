@@ -85,8 +85,8 @@ Presentation for PyData Berlin September meetup
 
 ## ML Example
 
-[Databricks notebook with Pipeline and StringIndexers](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/662560416696146/3079115932455629/5106111992384501/latest.html)
-[Databricks notebook with RFormula](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/662560416696146/930178755350337/5106111992384501/latest.html)
+- [Databricks notebook with Pipeline and StringIndexers](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/662560416696146/3079115932455629/5106111992384501/latest.html)
+- [Databricks notebook with RFormula](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/662560416696146/930178755350337/5106111992384501/latest.html)
 
 ## Unit Testing
 
