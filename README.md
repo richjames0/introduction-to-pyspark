@@ -160,6 +160,12 @@ Presentation for PyData Berlin September meetup
 
 ## References
 
+- Dataset used in examples
+    -   [Moro et al., 2011] S. Moro, R. Laureano and P. Cortez. Using Data Mining for Bank Direct Marketing: An Application of the CRISP-DM Methodology. 
+    - In P. Novais et al. (Eds.), Proceedings of the European Simulation and Modelling Conference - ESM'2011, pp. 117-121, Guimarães, Portugal, October, 2011. EUROSIS.
+    - http://hdl.handle.net/1822/14838
+    - http://www3.dsi.uminho.pt/pcortez/bib/2011-esm-1.txt
+    - Modified to add names and addresses using Faker
 - DataFrames
     - <https://databricks.com/blog/2015/02/17/introducing-dataframes-in-spark-for-large-scale-data-science.html>
     - <https://medium.com/@chris_bour/6-differences-between-pandas-and-spark-dataframes-1380cec394d2#.xe6wm0h56>
