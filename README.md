@@ -37,6 +37,7 @@ Presentation for PyData Berlin September meetup
 - Performance
 - Complexity
 - Troubleshooting
+- Necessary?
 - Small community?
 
 ## Getting Started
